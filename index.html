@@ -4,11 +4,34 @@
     <meta charset="utf-8" />
     <meta name="robots" content="noindex, nofollow" />
     <title>test exit intent popup</title>
-    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/history.js/1.8/bundled/html4+html5/native.history.js"></script>
+
   </head>
   <body id="bodyId">
-    <a href="./b.html">go to second page</a>
-    222
-    <script class="exit_intent_popup" type="text/javascript" src="https://stg-popup.kuzen.io/" data-secretKey="9f199cc0-ec8e-4efb-bdc8-7cd31a531436" async></script>
+    <a href="/b.html">go to b page</a>
+    <script>
+      if (History.enabled) {
+            // Thêm state hiện tại vào lịch sử
+            History.replaceState({state: 'initial'}, "Initial State");
+
+            // Thêm một state mới để kiểm tra
+            History.pushState({state: 'new'}, "New State");
+
+            // Lắng nghe sự kiện statechange
+            History.Adapter.bind(window, 'statechange', function() {
+                var State = History.getState();
+                console.log("State change detected!", State);
+
+                // Kiểm tra nếu người dùng quay lại trang đầu tiên
+                if (State.data.state === 'initial') {
+                    alert("You pressed the back button!");
+                }
+            });
+        } else {
+            console.log("History.js is not enabled in this browser.");
+        }
+  </script>
+    <!-- <script class="exit_intent_popup" type="text/javascript" src="./main.js" data-secretKey="1959277b-860f-49a0-9217-4329d2a1a9f6" async></script> -->
   </body>
 </html>
