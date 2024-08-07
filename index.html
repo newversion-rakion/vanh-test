@@ -11,26 +11,49 @@
   <body id="bodyId">
     <a href="/b.html">go to b page</a>
     <script>
-      if (History.enabled) {
-            // Thêm state hiện tại vào lịch sử
-            History.replaceState({state: 'initial'}, "Initial State");
+      (function() {
+          var initialState = { state: 'initial' };
+          var newState = { state: 'new' };
 
-            // Thêm một state mới để kiểm tra
-            History.pushState({state: 'new'}, "New State");
+          if (History.enabled) {
+              // Thay thế state hiện tại với trạng thái ban đầu
+              History.replaceState(initialState, "Initial State");
 
-            // Lắng nghe sự kiện statechange
-            History.Adapter.bind(window, 'statechange', function() {
-                var State = History.getState();
-                console.log("State change detected!", State);
+              // Thêm một state mới để kiểm tra
+              History.pushState(newState, "New State");
 
-                // Kiểm tra nếu người dùng quay lại trang đầu tiên
-                if (State.data.state === 'initial') {
-                    alert("You pressed the back button!");
-                }
-            });
-        } else {
-            console.log("History.js is not enabled in this browser.");
-        }
+              // Lắng nghe sự kiện statechange từ History.js
+              History.Adapter.bind(window, 'statechange', function() {
+                  var State = History.getState();
+                  console.log("State change detected!", State);
+
+                  if (State.data.state === 'initial') {
+                      alert("You pressed the back button!");
+                  }
+              });
+
+              // Dự phòng cho các trình duyệt không hỗ trợ đầy đủ sự kiện popstate
+              window.addEventListener('popstate', function(event) {
+                  if (event.state && event.state.state === 'initial') {
+                      alert("You pressed the back button popstate!");
+                  }
+              });
+
+              // Dự phòng sử dụng hashchange
+              window.addEventListener('hashchange', function() {
+                  if (!location.hash) {
+                      alert("You pressed the back button hashchange!");
+                  }
+              });
+
+              // Thêm hash để kiểm tra hashchange
+              if (!location.hash) {
+                  location.hash = '#new';
+              }
+          } else {
+              console.log("History.js is not enabled in this browser.");
+          }
+      })();
   </script>
     <!-- <script class="exit_intent_popup" type="text/javascript" src="./main.js" data-secretKey="1959277b-860f-49a0-9217-4329d2a1a9f6" async></script> -->
   </body>
