@@ -28,7 +28,7 @@
                   console.log("State change detected!", State);
 
                   if (State.data.state === 'initial') {
-                      alert("You pressed the back button!");
+                      alert("You pressed the back button statechange!");
                   }
               });
 
@@ -38,23 +38,12 @@
                       alert("You pressed the back button popstate!");
                   }
               });
-
-              // Dự phòng sử dụng hashchange
-              window.addEventListener('hashchange', function() {
-                  if (!location.hash) {
-                      alert("You pressed the back button hashchange!");
-                  }
-              });
-
-              // Thêm hash để kiểm tra hashchange
-              if (!location.hash) {
-                  location.hash = '#new';
-              }
           } else {
               console.log("History.js is not enabled in this browser.");
           }
       })();
   </script>
+</body>
     <!-- <script class="exit_intent_popup" type="text/javascript" src="./main.js" data-secretKey="1959277b-860f-49a0-9217-4329d2a1a9f6" async></script> -->
   </body>
 </html>
